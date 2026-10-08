@@ -1,0 +1,140 @@
+using System.Net.Http.Json;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using src.Config;
+using src.Data;
+using StackExchange.Redis;
+using Xunit;
+
+namespace Integration.Setup;
+
+public partial class TestApp : IAsyncLifetime, IClassFixture<ApiFactory>
+{
+    public readonly Config Config;
+    private readonly AppDbContext _dbContext;
+    private readonly HttpClient _httpClient;
+    private readonly IConnectionMultiplexer _multiplexer;
+    private readonly IServiceScope _scope;
+
+    protected TestApp(ApiFactory factory)
+    {
+        _scope = factory.Services.CreateScope();
+        _dbContext = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        _multiplexer = _scope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
+        Config = _scope.ServiceProvider.GetRequiredService<Config>();
+        _httpClient = factory.CreateClient();
+    }
+
+    public async ValueTask InitializeAsync()
+    {
+        _dbContext.Users.AddRange(TestData.SeedUsers());
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        var tableNames = _dbContext
+            .Model.GetEntityTypes()
+            .Select(t => t.GetTableName())
+            .Distinct()
+            .ToList();
+
+        foreach (
+            var sql in tableNames.Select(tableName => $"TRUNCATE TABLE \"{tableName}\" CASCADE;")
+        )
+            await _dbContext.Database.ExecuteSqlRawAsync(sql);
+
+        var db = _multiplexer.GetDatabase();
+        var redisServer = _multiplexer.GetServer(_multiplexer.GetEndPoints().First());
+
+        await foreach (var key in redisServer.KeysAsync(pattern: $"{Config.Redis.KeyPrefix}*"))
+            await db.KeyDeleteAsync(key);
+
+        await _dbContext.DisposeAsync();
+        _httpClient.Dispose();
+        _scope.Dispose();
+
+        GC.SuppressFinalize(this);
+    }
+
+    private async Task<HttpResponseMessage> Request<TValue>(
+        TValue? data,
+        HttpMethod method,
+        string path,
+        string? cookie,
+        CancellationToken ct = default
+    )
+    {
+        var message = new HttpRequestMessage(method, path);
+        if (cookie is not null)
+        {
+            message.Headers.Add("Cookie", cookie);
+        }
+
+        if (data is not null)
+        {
+            message.Content = data switch
+            {
+                MultipartFormDataContent form => form,
+                HttpContent httpContent => httpContent,
+                _ => JsonContent.Create(data),
+            };
+        }
+
+        return await _httpClient.SendAsync(message, ct);
+    }
+
+    private async Task<HttpResponseMessage> Request(
+        string path,
+        string? cookie,
+        IDictionary<string, string?>? query = null,
+        CancellationToken ct = default
+    )
+    {
+        var requestUri = path;
+        if (query is not null)
+        {
+            requestUri = QueryHelpers.AddQueryString(path, query);
+        }
+
+        var message = new HttpRequestMessage(HttpMethod.Get, requestUri);
+        if (cookie is not null)
+        {
+            message.Headers.Add("Cookie", cookie);
+        }
+
+        return await _httpClient.SendAsync(message, ct);
+    }
+
+    private async Task<HttpResponseMessage> Request(
+        string path,
+        string? cookie,
+        IEnumerable<KeyValuePair<string, string?>>? query = null,
+        CancellationToken ct = default
+    )
+    {
+        var requestUri = path;
+        if (query is not null)
+        {
+            var queryString = string.Join(
+                "&",
+                query
+                    .Where(x => x.Value is not null)
+                    .Select(x => $"{Uri.EscapeDataString(x.Key)}={Uri.EscapeDataString(x.Value!)}")
+            );
+
+            if (!string.IsNullOrWhiteSpace(queryString))
+                requestUri += "?" + queryString;
+        }
+
+        var message = new HttpRequestMessage(HttpMethod.Get, requestUri);
+        if (cookie is not null)
+        {
+            message.Headers.Add("Cookie", cookie);
+        }
+
+        return await _httpClient.SendAsync(message, ct);
+    }
+}

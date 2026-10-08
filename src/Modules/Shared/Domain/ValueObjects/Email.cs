@@ -15,9 +15,8 @@ public sealed record Email : NonEmptyString
     private Email(string value)
         : base(value) { }
 
-    public static Result<Email> Create(string value)
-    {
-        var result = NonEmptyString.Create(
+    public static Result<Email> Create(string value) =>
+        NonEmptyString.Create(
             value,
             "email",
             "Email",
@@ -33,7 +32,4 @@ public sealed record Email : NonEmptyString
                 return Result.Success();
             }
         );
-
-        return result.Value;
-    }
 }
