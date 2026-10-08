@@ -11,7 +11,7 @@ using src.Modules.Users.Domain.Exceptions;
 
 namespace src.Modules.Auth.UseCases;
 
-public sealed record SignUpCommand(
+internal sealed record SignUpCommand(
     Email Email,
     Password Password,
     FirstName FirstName,
@@ -71,7 +71,7 @@ internal sealed class SignUpCommandHandler(
                 EmailMessageBuilder.SerializeMessage(message)
             );
 
-            await authCache.StoreVerificationTokenAsync(user.Id, tokenResult.Value, ct);
+            await authCache.StoreUserIdByVerificationTokenAsync(user.Id, tokenResult.Value, ct);
 
             dbContext.Outboxes.Add(outbox);
 

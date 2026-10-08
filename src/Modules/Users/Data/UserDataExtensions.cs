@@ -21,4 +21,20 @@ public static class UserDataExtensions
 
         return query.FirstOrDefaultAsync(ct);
     }
+
+    public static Task<User?> GetById(
+        this DbSet<User> users,
+        UserId id,
+        bool trackChanges,
+        CancellationToken ct = default
+    )
+    {
+        var query = users.Where(u => u.Id == id);
+        if (!trackChanges)
+        {
+            query = query.AsNoTracking();
+        }
+
+        return query.FirstOrDefaultAsync(ct);
+    }
 }

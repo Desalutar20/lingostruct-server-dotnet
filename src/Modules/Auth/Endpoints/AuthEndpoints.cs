@@ -6,7 +6,7 @@ internal static partial class AuthEndpoint
     {
         var group = router.MapGroup("/auth").WithTags("Authentication");
 
-        group.SignUpV1();
+        group.SignUpV1().VerifyAccountV1();
     }
 
     // private static void SetSessionCookie(HttpContext ctx, Guid sessionId, ApplicationConfig config)

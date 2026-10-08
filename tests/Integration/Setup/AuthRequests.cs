@@ -9,6 +9,11 @@ public partial class TestApp
         CancellationToken ct = default
     ) => await Request(data, HttpMethod.Post, "/api/v1/auth/sign-up", null, ct);
 
+    protected async Task<HttpResponseMessage> VerifyAccount(
+        VerifyAccountRequest data,
+        CancellationToken ct = default
+    ) => await Request(data, HttpMethod.Post, "/api/v1/auth/verify-account", null, ct);
+
     // protected async Task CreateAndVerify(SignUpRequest data, CancellationToken ct = default)
     // {
     //     var signUpResponse = await SignUp(data, ct);
