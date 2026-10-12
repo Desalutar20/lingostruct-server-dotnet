@@ -1,6 +1,6 @@
-using src.Config;
-
 namespace src.Modules.Auth.Endpoints;
+
+using src.Config;
 
 internal static partial class AuthEndpoint
 {
@@ -8,7 +8,13 @@ internal static partial class AuthEndpoint
     {
         var group = router.MapGroup("/auth").WithTags("Authentication");
 
-        group.SignUpV1().SignInV1().VerifyAccountV1();
+        group
+            .SignUpV1()
+            .SignInV1()
+            .VerifyAccountV1()
+            .ForgotPasswordV1()
+            .ResetPasswordV1()
+            .LogoutV1();
     }
 
     private static void SetSessionCookie(HttpContext ctx, Guid sessionId, ApplicationConfig config)

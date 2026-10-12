@@ -12,7 +12,7 @@ using src.Data;
 namespace src.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261008065908_InitialData")]
+    [Migration("20261012200042_InitialData")]
     partial class InitialData
     {
         /// <inheritdoc />
@@ -58,7 +58,7 @@ namespace src.Data.Migrations
 
                     b.ToTable("outbox", null, t =>
                         {
-                            t.HasCheckConstraint("CK_type", "type IN ('regular')");
+                            t.HasCheckConstraint("CK_type", "type IN ('email')");
                         });
                 });
 

@@ -33,7 +33,7 @@ internal sealed class SessionConverter : JsonConverter<Session>
     {
         writer.WriteStartObject();
 
-        writer.WriteString("id", value.UserId.Value);
+        writer.WriteString("userId", value.UserId.Value);
         writer.WriteString("email", value.Email.Value);
 
         if (value.FirstName is not null)

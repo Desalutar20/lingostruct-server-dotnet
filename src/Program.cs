@@ -14,6 +14,10 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseHttpLogging();
+app.UseExceptionHandler();
+app.UseCors();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -21,6 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRateLimiter();
 app.AddEndpoints();
 
 app.Run();

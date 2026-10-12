@@ -14,7 +14,7 @@ internal sealed class VerifyAccountCommandHandler(AppDbContext dbContext, AuthCa
 {
     public async Task<Result> Handle(VerifyAccountCommand command, CancellationToken ct = default)
     {
-        var userIdResult = await authCache.GetAndDeleteUserIdVerificationTokenAsync(
+        var userIdResult = await authCache.GetAndDeleteUserIdByVerificationTokenAsync(
             command.Token,
             ct
         );

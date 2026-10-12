@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.Endpoints;
+
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using src.Modules.Auth.UseCases;
@@ -8,8 +10,6 @@ using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Shared.Endpoints.Extensions;
 using src.Modules.Shared.Endpoints.Filters;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Auth.Endpoints;
 
 [Serializable]
 public sealed record SignInRequest(string Email, string Password);
@@ -39,7 +39,7 @@ internal static partial class AuthEndpoint
                     CancellationToken ct = default
                 ) =>
                 {
-                    var logger = loggerFactory.CreateLogger("Auth.SignUp");
+                    var logger = loggerFactory.CreateLogger("Auth.SignIn");
 
                     var command = request.ToCommand();
                     var result = await commandHandler.Handle(command, ct);

@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.Endpoints;
+
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using src.Modules.Auth.UseCases;
@@ -7,8 +9,6 @@ using src.Modules.Shared.Endpoints.Constants;
 using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Shared.Endpoints.Extensions;
 using src.Modules.Shared.Endpoints.Filters;
-
-namespace src.Modules.Auth.Endpoints;
 
 [Serializable]
 public sealed record VerifyAccountRequest(string Token, string Email);

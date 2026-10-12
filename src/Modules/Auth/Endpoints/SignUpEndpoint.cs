@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.Endpoints;
+
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using src.Modules.Auth.UseCases;
@@ -8,8 +10,6 @@ using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Shared.Endpoints.Extensions;
 using src.Modules.Shared.Endpoints.Filters;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Auth.Endpoints;
 
 [Serializable]
 public sealed record SignUpRequest(

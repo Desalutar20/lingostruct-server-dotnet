@@ -37,13 +37,14 @@ public sealed class SignInTests(ApiFactory factory) : TestApp(factory)
     [MemberData(nameof(InvalidRequests))]
     public async ValueTask Should_ReturnBadRequest_When_RequestIsInvalid(
         string field,
-        SignInRequest invalidRequest
+        SignInRequest invalidRequest,
+        string because
     )
     {
         var ct = TestContext.Current.CancellationToken;
 
         var response = await SignIn(invalidRequest, ct);
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest, because);
 
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>(ct);
 
@@ -113,27 +114,34 @@ public sealed class SignInTests(ApiFactory factory) : TestApp(factory)
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
-    public static TheoryData<string, SignInRequest> InvalidRequests() =>
+    public static TheoryData<string, SignInRequest, string> InvalidRequests() =>
         [
-            ("email", new SignInRequest("", TestData.FakePassword(Password.MinLength))),
             (
                 "email",
-                new SignInRequest("invalid email", TestData.FakePassword(Password.MinLength))
+                new SignInRequest("", TestData.FakePassword(Password.MinLength)),
+                "Empty email"
             ),
-            ("password", new SignInRequest(TestData.FakeEmail(), "")),
+            (
+                "email",
+                new SignInRequest("invalid email", TestData.FakePassword(Password.MinLength)),
+                "Invalid email"
+            ),
+            ("password", new SignInRequest(TestData.FakeEmail(), ""), "Empty password"),
             (
                 "password",
                 new SignInRequest(
                     TestData.FakeEmail(),
                     TestData.FakePassword(Password.MinLength - 1)
-                )
+                ),
+                "Too short password"
             ),
             (
                 "password",
                 new SignInRequest(
                     TestData.FakeEmail(),
                     TestData.FakePassword(Password.MaxLength + 1)
-                )
+                ),
+                "Too long password"
             ),
         ];
 }

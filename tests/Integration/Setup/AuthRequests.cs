@@ -21,6 +21,16 @@ public partial class TestApp
         CancellationToken ct = default
     ) => await Request(data, HttpMethod.Post, "/api/v1/auth/verify-account", null, ct);
 
+    protected async Task<HttpResponseMessage> ForgotPassword(
+        ForgotPasswordRequest data,
+        CancellationToken ct = default
+    ) => await Request(data, HttpMethod.Post, "/api/v1/auth/forgot-password", null, ct);
+
+    protected async Task<HttpResponseMessage> ResetPassword(
+        ResetPasswordRequest data,
+        CancellationToken ct = default
+    ) => await Request(data, HttpMethod.Post, "/api/v1/auth/reset-password", null, ct);
+
     protected async Task CreateAndVerify(SignUpRequest data, CancellationToken ct = default)
     {
         var signUpResponse = await SignUp(data, ct);

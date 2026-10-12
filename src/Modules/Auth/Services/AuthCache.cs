@@ -21,10 +21,28 @@ public sealed class AuthCache(IConnectionMultiplexer redis, Config.Config config
             ct
         );
 
-    public async Task<Result<UserId>?> GetAndDeleteUserIdVerificationTokenAsync(
+    public async Task StoreUserIdByResetPasswordTokenAsync(
+        UserId userId,
+        NonEmptyString token,
+        CancellationToken ct = default
+    ) =>
+        await StoreUserId(
+            TokenType.ResetPassword,
+            userId,
+            token,
+            TimeSpan.FromMinutes(config.Application.ResetPasswordTtlMinutes),
+            ct
+        );
+
+    public async Task<Result<UserId>?> GetAndDeleteUserIdByVerificationTokenAsync(
         NonEmptyString token,
         CancellationToken ct = default
     ) => await GetUserId(TokenType.AccountVerification, token, ct);
+
+    public async Task<Result<UserId>?> GetAndDeleteUserIdByResetPasswordTokenAsync(
+        NonEmptyString token,
+        CancellationToken ct = default
+    ) => await GetUserId(TokenType.ResetPassword, token, ct);
 
     private async Task<Result<UserId>?> GetUserId(
         TokenType tokenType,

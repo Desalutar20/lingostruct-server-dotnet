@@ -5,7 +5,7 @@ namespace src.Modules.Shared.Outbox;
 
 public sealed record OutboxType : NonEmptyString
 {
-    public static OutboxType Email => new("regular");
+    public static OutboxType Email => new("email");
 
     private OutboxType(string value)
         : base(value) { }

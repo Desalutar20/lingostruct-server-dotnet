@@ -55,7 +55,7 @@ namespace src.Data.Migrations
 
                     b.ToTable("outbox", null, t =>
                         {
-                            t.HasCheckConstraint("CK_type", "type IN ('regular')");
+                            t.HasCheckConstraint("CK_type", "type IN ('email')");
                         });
                 });
 
