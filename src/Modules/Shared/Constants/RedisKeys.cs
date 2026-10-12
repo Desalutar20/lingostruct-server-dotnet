@@ -9,7 +9,7 @@ public static class RedisKeys
     public static string AccountVerification(RedisConfig config, NonEmptyString token) =>
         $"{config.KeyPrefix}{RedisPrefixes.AccountVerification}{token.Value}";
 
-    public static string Session(RedisConfig config, string sessionId) =>
+    public static string Session(RedisConfig config, Guid sessionId) =>
         $"{config.KeyPrefix}{RedisPrefixes.Session}{sessionId}";
 
     public static string Sessions(RedisConfig config, UserId userId) =>

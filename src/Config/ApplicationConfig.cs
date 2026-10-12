@@ -6,6 +6,7 @@ public sealed record ApplicationConfig
     public required string AccountVerificationPath { get; init; }
     public required string ResetPasswordPath { get; init; }
 
+    public required int MaxSessions { get; init; }
     public required string SessionCookieName { get; init; }
     public required string OAuthStateCookieName { get; init; }
     public required bool CookieSecure { get; init; }

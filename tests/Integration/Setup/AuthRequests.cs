@@ -1,3 +1,5 @@
+using System.Net;
+using FluentAssertions;
 using src.Modules.Auth.Endpoints;
 
 namespace Integration.Setup;
@@ -9,25 +11,30 @@ public partial class TestApp
         CancellationToken ct = default
     ) => await Request(data, HttpMethod.Post, "/api/v1/auth/sign-up", null, ct);
 
+    protected async Task<HttpResponseMessage> SignIn(
+        SignInRequest data,
+        CancellationToken ct = default
+    ) => await Request(data, HttpMethod.Post, "/api/v1/auth/sign-in", null, ct);
+
     protected async Task<HttpResponseMessage> VerifyAccount(
         VerifyAccountRequest data,
         CancellationToken ct = default
     ) => await Request(data, HttpMethod.Post, "/api/v1/auth/verify-account", null, ct);
 
-    // protected async Task CreateAndVerify(SignUpRequest data, CancellationToken ct = default)
-    // {
-    //     var signUpResponse = await SignUp(data, ct);
-    //     signUpResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+    protected async Task CreateAndVerify(SignUpRequest data, CancellationToken ct = default)
+    {
+        var signUpResponse = await SignUp(data, ct);
+        signUpResponse.StatusCode.Should().Be(HttpStatusCode.Created);
 
-    //     var token = await GetRedisToken(TokenType.AccountVerification, ct);
-    //     token.Should().NotBeNull();
+        var token = await GetRedisToken(TokenType.AccountVerification, ct);
+        token.Should().NotBeNull();
 
-    //     var accountVerificationResponse = await VerifyAccount(
-    //         new VerifyAccountRequest(token!, data.Email),
-    //         ct
-    //     );
-    //     accountVerificationResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-    // }
+        var accountVerificationResponse = await VerifyAccount(
+            new VerifyAccountRequest(token!, data.Email),
+            ct
+        );
+        accountVerificationResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 
     // protected async Task<string> CreateAndSignIn(
     //     SignUpRequest data,

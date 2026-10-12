@@ -11,6 +11,7 @@ internal sealed class ConfigValidator : AbstractValidator<Config>
         RuleFor(x => x.Application.ClientUrl).NotEmpty().Url();
         RuleFor(x => x.Application.AccountVerificationPath).NotEmpty();
         RuleFor(x => x.Application.ResetPasswordPath).NotEmpty();
+        RuleFor(x => x.Application.MaxSessions).InclusiveBetween(3, 5);
         RuleFor(x => x.Application.SessionCookieName).NotEmpty();
         RuleFor(x => x.Application.OAuthStateCookieName).NotEmpty();
         RuleFor(x => x.Application.AccountVerificationTtlMinutes).InclusiveBetween(60, 1440);

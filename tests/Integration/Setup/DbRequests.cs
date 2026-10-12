@@ -8,4 +8,15 @@ public partial class TestApp
 {
     protected async Task<User?> GetUserFromDbByEmail(Email email, CancellationToken ct) =>
         await _dbContext.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Email == email, ct);
+
+    protected async Task<User?> GetUserFromDbById(UserId id, CancellationToken ct) =>
+        await _dbContext.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Id == id, ct);
+
+    protected async Task DeleteUserFromDbByEmail(Email email, CancellationToken ct) =>
+        await _dbContext.Users.Where(e => e.Email == email).ExecuteDeleteAsync(ct);
+
+    protected async Task BanUserInDbByEmail(Email email, CancellationToken ct) =>
+        await _dbContext
+            .Users.Where(u => u.Email == email)
+            .ExecuteUpdateAsync(setters => setters.SetProperty(u => u.IsBanned, true), ct);
 }

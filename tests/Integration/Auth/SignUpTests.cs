@@ -1,15 +1,14 @@
+namespace Integration.Auth;
+
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Integration.Setup;
+using Microsoft.AspNetCore.Mvc;
 using src.Modules.Auth.Endpoints;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Domain;
 using Xunit;
-
-namespace Integration.Auth;
-
-using Microsoft.AspNetCore.Mvc;
 
 public sealed class SignUpTests(ApiFactory factory) : TestApp(factory)
 {

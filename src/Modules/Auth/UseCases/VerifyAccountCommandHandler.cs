@@ -1,4 +1,5 @@
 using src.Data;
+using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;

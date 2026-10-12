@@ -2,7 +2,7 @@ using FluentValidation;
 using Microsoft.Extensions.Options;
 using src.Config;
 using src.Data;
-using src.Modules.Auth;
+using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Services.Email;
 using StackExchange.Redis;
@@ -102,6 +102,7 @@ public static class ServiceExtensions
         {
             services.AddSingleton<EmailService>();
             services.AddSingleton<AuthCache>();
+            services.AddSingleton<SessionStore>();
 
             return services;
         }

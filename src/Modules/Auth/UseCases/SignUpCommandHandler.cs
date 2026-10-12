@@ -1,4 +1,5 @@
 using src.Data;
+using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;
@@ -44,7 +45,7 @@ internal sealed class SignUpCommandHandler(
         var tokenResult = RandomTokenGenerator.Generate();
         if (tokenResult.IsFailure)
         {
-            return tokenResult;
+            return tokenResult.Error;
         }
 
         var user = new User(

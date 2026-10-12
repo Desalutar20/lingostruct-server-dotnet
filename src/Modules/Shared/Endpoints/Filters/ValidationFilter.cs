@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace src.Modules.Shared.Endpoints.Filters;
 
-public sealed class ValidationFilter(IServiceProvider services) : IEndpointFilter
+internal sealed class ValidationFilter(IServiceProvider services) : IEndpointFilter
 {
     private static readonly ConcurrentDictionary<Type, IValidator?> ValidatorCache = new();
 

@@ -1,3 +1,5 @@
+using src.Config;
+
 namespace src.Modules.Auth.Endpoints;
 
 internal static partial class AuthEndpoint
@@ -6,30 +8,30 @@ internal static partial class AuthEndpoint
     {
         var group = router.MapGroup("/auth").WithTags("Authentication");
 
-        group.SignUpV1().VerifyAccountV1();
+        group.SignUpV1().SignInV1().VerifyAccountV1();
     }
 
-    // private static void SetSessionCookie(HttpContext ctx, Guid sessionId, ApplicationConfig config)
-    // {
-    //     var cookieOptions = new CookieOptions
-    //     {
-    //         Expires = DateTimeOffset.UtcNow.AddMinutes(config.SessionTtlMinutes),
-    //         HttpOnly = true,
-    //         Secure = config.CookieSecure,
-    //         SameSite = SameSiteMode.Lax,
-    //         Path = "/",
-    //     };
+    private static void SetSessionCookie(HttpContext ctx, Guid sessionId, ApplicationConfig config)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddMinutes(config.SessionTtlMinutes),
+            HttpOnly = true,
+            Secure = config.CookieSecure,
+            SameSite = SameSiteMode.Lax,
+            Path = "/",
+        };
 
-    //     ctx.Response.Cookies.Append(config.SessionCookieName, sessionId.ToString(), cookieOptions);
-    // }
+        ctx.Response.Cookies.Append(config.SessionCookieName, sessionId.ToString(), cookieOptions);
+    }
 
-    // private static void ClearSessionCookie(HttpContext ctx, ApplicationConfig config)
-    // {
-    //     var cookieOptions = new CookieOptions
-    //     {
-    //         Expires = DateTimeOffset.UtcNow.AddDays(-1),
-    //         Path = "/",
-    //     };
-    //     ctx.Response.Cookies.Append(config.SessionCookieName, "", cookieOptions);
-    // }
+    private static void ClearSessionCookie(HttpContext ctx, ApplicationConfig config)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddDays(-1),
+            Path = "/",
+        };
+        ctx.Response.Cookies.Append(config.SessionCookieName, "", cookieOptions);
+    }
 }

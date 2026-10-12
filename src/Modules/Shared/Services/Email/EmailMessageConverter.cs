@@ -4,7 +4,7 @@ using src.Modules.Shared.Domain.ValueObjects;
 
 namespace src.Modules.Shared.Services.Email;
 
-public sealed class EmailMessageConverter : JsonConverter<EmailMessage>
+internal sealed class EmailMessageConverter : JsonConverter<EmailMessage>
 {
     public override EmailMessage Read(
         ref Utf8JsonReader reader,
@@ -18,8 +18,8 @@ public sealed class EmailMessageConverter : JsonConverter<EmailMessage>
         var email = Domain.ValueObjects.Email.Create(root.GetProperty("to").GetString()!).Value;
         var plainText = NonEmptyString.Create(root.GetProperty("plainText").GetString()!).Value;
 
-        var htmlText = root.TryGetProperty("htmlText", out var fn)
-            ? NonEmptyString.Create(fn.GetString()!).Value
+        var htmlText = root.TryGetProperty("htmlText", out var html)
+            ? NonEmptyString.Create(html.GetString()!).Value
             : null;
 
         return new EmailMessage(subject, email, plainText, htmlText);

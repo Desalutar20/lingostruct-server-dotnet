@@ -4,7 +4,7 @@ using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Domain;
 using StackExchange.Redis;
 
-namespace src.Modules.Auth;
+namespace src.Modules.Auth.Services;
 
 public sealed class AuthCache(IConnectionMultiplexer redis, Config.Config config)
 {
