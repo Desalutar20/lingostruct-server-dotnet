@@ -12,9 +12,12 @@ using Microsoft.Extensions.Options;
 using src.Config;
 using src.Data;
 using src.ExceptionHandler;
+using src.Modules.Auth.OAuth;
+using src.Modules.Auth.OAuth.Providers;
 using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Services.Email;
+using src.Modules.Users.Domain;
 using StackExchange.Redis;
 
 public static class ServiceExtensions
@@ -124,6 +127,17 @@ public static class ServiceExtensions
             services.AddSingleton<EmailService>();
             services.AddSingleton<AuthCache>();
             services.AddSingleton<SessionStore>();
+
+            services.AddKeyedSingleton<IOAuthClient, GoogleOAuthClient>(OAuthProvider.Google);
+            services.AddKeyedSingleton<IOAuthClient, GithubOAuthClient>(OAuthProvider.Github);
+            services.AddSingleton<OAuthClientFactory>();
+
+            services.AddHttpClient<GoogleOAuthClient>(client =>
+                client.Timeout = TimeSpan.FromSeconds(10)
+            );
+            services.AddHttpClient<GithubOAuthClient>(client =>
+                client.Timeout = TimeSpan.FromSeconds(10)
+            );
 
             return services;
         }

@@ -28,7 +28,7 @@ internal sealed class VerifyAccountCommandHandler(AppDbContext dbContext, AuthCa
             return userIdResult.Error;
         }
 
-        var user = await dbContext.Users.GetById(userIdResult.Value, true, ct);
+        var user = await dbContext.Users.GetByIdAsync(userIdResult.Value, true, ct);
         if (user is null)
         {
             return AuthErrors.InvalidToken;

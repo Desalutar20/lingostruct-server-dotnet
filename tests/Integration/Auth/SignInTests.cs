@@ -21,10 +21,7 @@ public sealed class SignInTests(ApiFactory factory) : TestApp(factory)
         var request = TestData.SignUpRequest();
         await CreateAndVerify(request, ct);
 
-        var signInResponse = await SignIn(
-            new SignInRequest(request.Email, request.Password),
-            TestContext.Current.CancellationToken
-        );
+        var signInResponse = await SignIn(new SignInRequest(request.Email, request.Password), ct);
         signInResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var body = await signInResponse.Content.ReadFromJsonAsync<ApiResponse<UserDto>>(ct);

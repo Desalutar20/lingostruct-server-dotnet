@@ -43,6 +43,18 @@ internal sealed class ConfigValidator : AbstractValidator<Config>
         RuleFor(x => x.Smtp.Port).NotEmpty().InclusiveBetween(1, 65535);
         RuleFor(x => x.Smtp.From).NotEmpty();
 
+        RuleFor(x => x.OAuth).NotEmpty();
+        RuleFor(x => x.OAuth.Google).NotEmpty();
+        RuleFor(x => x.OAuth.Google.ClientId).NotEmpty();
+        RuleFor(x => x.OAuth.Google.ClientSecret).NotEmpty();
+        RuleFor(x => x.OAuth.Google.RedirectUrl).NotEmpty();
+
+        RuleFor(x => x.OAuth).NotEmpty();
+        RuleFor(x => x.OAuth.Github).NotEmpty();
+        RuleFor(x => x.OAuth.Github.ClientId).NotEmpty();
+        RuleFor(x => x.OAuth.Github.ClientSecret).NotEmpty();
+        RuleFor(x => x.OAuth.Github.RedirectUrl).NotEmpty();
+
         RuleFor(x => x.RateLimit).NotEmpty();
         RuleFor(x => x.RateLimit.SignUp).NotEmpty();
         RuleFor(x => x.RateLimit.SignIn).NotEmpty();

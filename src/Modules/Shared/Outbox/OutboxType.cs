@@ -16,4 +16,6 @@ public sealed record OutboxType : NonEmptyString
             "email" => Email,
             _ => Error.Internal($"Invalid outbox type: {value}"),
         };
+
+    public override string ToString() => base.ToString();
 };

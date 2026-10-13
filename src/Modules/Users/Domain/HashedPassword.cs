@@ -28,4 +28,6 @@ public sealed record HashedPassword : NonEmptyString
 
         return result.Value;
     }
+
+    public override string ToString() => base.ToString();
 };

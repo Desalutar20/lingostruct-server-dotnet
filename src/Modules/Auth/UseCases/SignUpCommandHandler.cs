@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.UseCases;
+
 using src.Data;
 using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
@@ -9,8 +11,6 @@ using src.Modules.Shared.Services.Email;
 using src.Modules.Users.Data;
 using src.Modules.Users.Domain;
 using src.Modules.Users.Domain.Exceptions;
-
-namespace src.Modules.Auth.UseCases;
 
 internal sealed record SignUpCommand(
     Email Email,
@@ -29,7 +29,7 @@ internal sealed class SignUpCommandHandler(
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync(ct);
 
-        var existingUser = await dbContext.Users.GetByEmail(command.Email, false, ct);
+        var existingUser = await dbContext.Users.GetByEmailAsync(command.Email, false, ct);
         if (existingUser is not null)
         {
             await Task.Delay(1000, ct);
@@ -49,10 +49,10 @@ internal sealed class SignUpCommandHandler(
         }
 
         var user = new User(
-            command.FirstName,
-            command.LastName,
             command.Email,
-            hashedPasswordResult.Value
+            hashedPasswordResult.Value,
+            command.FirstName,
+            command.LastName
         );
 
         dbContext.Users.Add(user);

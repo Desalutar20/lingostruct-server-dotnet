@@ -19,7 +19,7 @@ internal sealed class ForgotPasswordCommandHandler(
 {
     public async Task<Result> Handle(ForgotPasswordCommand command, CancellationToken ct = default)
     {
-        var user = await dbContext.Users.GetByEmail(command.Email, false, ct);
+        var user = await dbContext.Users.GetByEmailAsync(command.Email, false, ct);
         if (user is null || !user.IsValid)
         {
             return Result.Success();

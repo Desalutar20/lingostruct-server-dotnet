@@ -6,7 +6,7 @@ namespace src.Modules.Users.Data;
 
 public static class UserDataExtensions
 {
-    public static Task<User?> GetByEmail(
+    public static Task<User?> GetByEmailAsync(
         this DbSet<User> users,
         Email email,
         bool trackChanges,
@@ -22,7 +22,7 @@ public static class UserDataExtensions
         return query.FirstOrDefaultAsync(ct);
     }
 
-    public static Task<User?> GetById(
+    public static Task<User?> GetByIdAsync(
         this DbSet<User> users,
         UserId id,
         bool trackChanges,

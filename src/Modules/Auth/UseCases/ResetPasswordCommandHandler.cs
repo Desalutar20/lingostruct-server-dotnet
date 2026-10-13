@@ -33,7 +33,7 @@ internal sealed class ResetPasswordCommandHandler(
             return userIdResult.Error;
         }
 
-        var user = await dbContext.Users.GetById(userIdResult.Value, true, ct);
+        var user = await dbContext.Users.GetByIdAsync(userIdResult.Value, true, ct);
         if (user is null || !user.IsValid || user.Email != command.Email)
         {
             return AuthErrors.InvalidToken;

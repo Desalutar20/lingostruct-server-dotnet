@@ -18,4 +18,6 @@ public sealed record ProviderId : NonEmptyString
             MaxLength,
             (val) => new ProviderId(val)
         );
+
+    public override string ToString() => base.ToString();
 };

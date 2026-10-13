@@ -20,4 +20,6 @@ public sealed record Password : NonEmptyString
             (val) => new Password(val),
             MinLength
         );
+
+    public override string ToString() => base.ToString();
 };

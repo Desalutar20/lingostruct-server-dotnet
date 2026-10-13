@@ -29,4 +29,6 @@ public sealed record Url : NonEmptyString
 
         return Result.Success();
     }
+
+    public override string ToString() => base.ToString();
 }

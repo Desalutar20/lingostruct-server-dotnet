@@ -32,4 +32,6 @@ public sealed record Email : NonEmptyString
                 return Result.Success();
             }
         );
+
+    public override string ToString() => base.ToString();
 }

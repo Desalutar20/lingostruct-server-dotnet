@@ -36,7 +36,7 @@ public static class TestData
                     .Create(FakePassword(HashedPassword.MinLength))
                     .Value;
 
-                return new User(null, null, email, hashedPassword);
+                return new User(email, hashedPassword, null, null);
             })
             .ToList();
 }

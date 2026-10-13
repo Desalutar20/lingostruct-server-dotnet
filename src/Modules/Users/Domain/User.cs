@@ -4,10 +4,10 @@ using src.Modules.Shared.Domain.ValueObjects;
 namespace src.Modules.Users.Domain;
 
 public sealed class User(
-    FirstName? firstName,
-    LastName? lastName,
     Email email,
-    HashedPassword hashedPassword
+    HashedPassword? hashedPassword,
+    FirstName? firstName,
+    LastName? lastName
 ) : Entity<UserId>(new UserId(Guid.NewGuid()))
 {
     public FirstName? FirstName { get; private set; } = firstName;
@@ -36,7 +36,7 @@ public sealed class User(
 
     public void UpdatePassword(HashedPassword newPassword) => HashedPassword = newPassword;
 
-    public Result LinkProvider(OAuthProvider provider, ProviderId providerId)
+    public Result LinkOAuthProvider(OAuthProvider provider, ProviderId providerId)
     {
         if (provider == OAuthProvider.Google)
         {

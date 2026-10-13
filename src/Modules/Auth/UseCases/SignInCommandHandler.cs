@@ -1,4 +1,5 @@
 using src.Data;
+using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;
@@ -21,7 +22,7 @@ internal sealed class SignInCommandHandler(
         CancellationToken ct = default
     )
     {
-        var user = await dbContext.Users.GetByEmail(command.Email, false, ct);
+        var user = await dbContext.Users.GetByEmailAsync(command.Email, false, ct);
         if (
             user is null
             || user.HashedPassword == null
@@ -32,16 +33,10 @@ internal sealed class SignInCommandHandler(
             return AuthErrors.InvalidCredentials;
         }
 
-        var sessions = await sessionStore.GetSessionIdsAsync(user.Id, ct);
-        if (sessions.Count >= config.Application.MaxSessions)
-        {
-            await sessionStore.RemoveAsync(user.Id, sessions[0], ct);
-        }
-
-        var session = Session.FromUser(user);
-        var sessionId = await sessionStore.SaveAsync(
-            session,
-            TimeSpan.FromMinutes(config.Application.SessionTtlMinutes),
+        var (session, sessionId) = await AuthService.GenerateSession(
+            user,
+            sessionStore,
+            config.Application,
             ct
         );
 

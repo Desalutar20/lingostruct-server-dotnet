@@ -11,6 +11,8 @@ internal static partial class AuthEndpoint
         group
             .SignUpV1()
             .SignInV1()
+            .GetOauthRedirectUrlV1()
+            .OAuthSignInV1()
             .VerifyAccountV1()
             .ForgotPasswordV1()
             .ResetPasswordV1()

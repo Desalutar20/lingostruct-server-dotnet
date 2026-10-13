@@ -18,4 +18,6 @@ public sealed record FirstName : NonEmptyString
             MaxLength,
             (val) => new FirstName(val)
         );
+
+    public override string ToString() => base.ToString();
 };

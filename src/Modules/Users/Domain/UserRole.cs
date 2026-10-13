@@ -18,4 +18,6 @@ public sealed record UserRole : NonEmptyString
             "admin" => Admin,
             _ => Error.Validation("role", [$"Invalid user role: {value}"]),
         };
+
+    public override string ToString() => base.ToString();
 };

@@ -16,6 +16,8 @@ public sealed record OAuthProvider : NonEmptyString
         {
             "google" => Google,
             "github" => Github,
-            _ => Error.Validation("role", [$"Invalid oauth provider: {value}"]),
+            _ => Error.Validation("provider", [$"Invalid oauth provider: {value}"]),
         };
+
+    public override string ToString() => base.ToString();
 };
