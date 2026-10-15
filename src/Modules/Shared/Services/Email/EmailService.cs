@@ -5,7 +5,7 @@ using src.Modules.Shared.Domain;
 
 namespace src.Modules.Shared.Services.Email;
 
-public sealed class EmailService(Config.Config config) : IAsyncDisposable
+internal sealed class EmailService(Config.Config config) : IAsyncDisposable
 {
     private static readonly TimeSpan SmtpClientTimeout = TimeSpan.FromSeconds(10);
 

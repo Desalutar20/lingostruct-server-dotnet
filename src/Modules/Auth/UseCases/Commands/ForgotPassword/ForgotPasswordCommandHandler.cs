@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.UseCases.Commands.ForgotPassword;
+
 using src.Config;
 using src.Data;
 using src.Modules.Auth.Services;

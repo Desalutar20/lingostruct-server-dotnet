@@ -1,6 +1,10 @@
 using System.Net;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using src.Modules.Auth.Endpoints;
+using src.Modules.Shared.Domain.ValueObjects;
+using src.Modules.Users.Domain;
+using Xunit;
 
 namespace Integration.Setup;
 
@@ -46,35 +50,32 @@ public partial class TestApp
         accountVerificationResponse.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
-    // protected async Task<string> CreateAndSignIn(
-    //     SignUpRequest data,
-    //     CancellationToken ct = default,
-    //     Role? role = null
-    // )
-    // {
-    //     await CreateAndVerify(data, ct);
+    protected async Task<string> CreateAndSignIn(
+        SignUpRequest data,
+        CancellationToken ct = default,
+        UserRole? role = null
+    )
+    {
+        await CreateAndVerify(data, ct);
 
-    //     if (role is not null)
-    //     {
-    //         await _dbContext
-    //             .Users.Where(u => u.Email == data.Email)
-    //             .ExecuteUpdateAsync(u => u.SetProperty(user => user.Role, user => role.Value), ct);
-    //     }
+        if (role is not null)
+        {
+            await _dbContext
+                .Users.Where(u => u.Email == data.Email)
+                .ExecuteUpdateAsync(u => u.SetProperty(user => user.Role, user => role), ct);
+        }
 
-    //     var signInResponse = await SignIn(
-    //         new SignInRequest(data.Email, data.Password),
-    //         TestContext.Current.CancellationToken
-    //     );
-    //     signInResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var signInResponse = await SignIn(new SignInRequest(data.Email, data.Password), ct);
+        signInResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-    //     var ok = signInResponse.Headers.TryGetValues("Set-Cookie", out var values);
-    //     ok.Should().BeTrue();
+        var ok = signInResponse.Headers.TryGetValues("Set-Cookie", out var values);
+        ok.Should().BeTrue();
 
-    //     var sessionCookie = values!.FirstOrDefault(c =>
-    //         c.StartsWith(Config.Application.SessionCookieName)
-    //     );
-    //     sessionCookie.Should().NotBeNull();
+        var sessionCookie = values!.FirstOrDefault(c =>
+            c.StartsWith(Config.Application.SessionCookieName)
+        );
+        sessionCookie.Should().NotBeNull();
 
-    //     return sessionCookie;
-    // }
+        return sessionCookie;
+    }
 }

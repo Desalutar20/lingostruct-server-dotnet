@@ -1,4 +1,4 @@
-namespace src.Modules.Auth.UseCases;
+namespace src.Modules.Auth.UseCases.Commands.SignUp;
 
 using src.Data;
 using src.Modules.Auth.Services;

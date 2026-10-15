@@ -1,8 +1,8 @@
+namespace src.Modules.Auth.UseCases.Commands.Logout;
+
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Auth.UseCases;
 
 public sealed record LogoutCommand(UserId UserId, Guid SessionId) : ICommand;
 

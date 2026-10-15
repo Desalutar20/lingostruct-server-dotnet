@@ -1,4 +1,5 @@
 using src.Config;
+using src.Modules.Auth.UseCases.Commands.Authenticate;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Endpoints.Constants;
 

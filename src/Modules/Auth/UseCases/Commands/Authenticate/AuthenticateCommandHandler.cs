@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.UseCases.Commands.Authenticate;
+
 using src.Modules.Auth;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;

@@ -13,12 +13,3 @@ internal sealed record Session(
     public static Session FromUser(User user) =>
         new(user.Id, user.Email, user.FirstName, user.LastName, user.Role, user.AvatarUrl);
 };
-
-// export type Session = {
-//   id: string;
-//   email: string;
-//   firstName: Nullable<string>;
-//   lastName: Nullable<string>;
-//   role: UserRole["value"];
-//   avatarUrl: Nullable<string>;
-// };

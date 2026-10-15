@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using src.Modules.Auth.OAuth;
-using src.Modules.Auth.UseCases;
+using src.Modules.Auth.UseCases.Queries.GenerateOAuthUrl;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Shared.Endpoints.Constants;
@@ -69,9 +69,7 @@ internal static partial class AuthEndpoint
                         cookieOptions
                     );
 
-                    return Results.Ok(result.Value.Item1.ToString());
-
-                    // return Results.Redirect(result.Value.Item1.ToString());
+                    return Results.Redirect(result.Value.Item1.ToString());
                 }
             )
             .Produces<ApiResponse<string>>()

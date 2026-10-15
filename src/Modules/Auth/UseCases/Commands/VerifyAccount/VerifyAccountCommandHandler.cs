@@ -1,11 +1,11 @@
+namespace src.Modules.Auth.UseCases.Commands.VerifyAccount;
+
 using src.Data;
 using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Data;
-
-namespace src.Modules.Auth.UseCases;
 
 internal sealed record VerifyAccountCommand(NonEmptyString Token, Email Email) : ICommand;
 

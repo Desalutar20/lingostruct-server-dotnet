@@ -33,5 +33,7 @@ public sealed record Email : NonEmptyString
             }
         );
 
+    public static implicit operator string(Email value) => value.Value;
+
     public override string ToString() => base.ToString();
 }

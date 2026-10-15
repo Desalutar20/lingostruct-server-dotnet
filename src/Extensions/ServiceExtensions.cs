@@ -1,7 +1,9 @@
 namespace src.Extensions;
 
+using System.Data;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using Dapper;
 using Data.Interceptors;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +11,17 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
+using Npgsql;
 using src.Config;
 using src.Data;
+using src.Data.TypeHandlers;
 using src.ExceptionHandler;
+using src.Modules.Admin.Users.Endpoints;
+using src.Modules.Auth.BackgroundServices;
 using src.Modules.Auth.OAuth;
 using src.Modules.Auth.OAuth.Providers;
 using src.Modules.Auth.Services;
+using src.Modules.Shared.BackgroundServices;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Services.Email;
 using src.Modules.Users.Domain;
@@ -49,6 +56,7 @@ public static class ServiceExtensions
                 .AddDatabase()
                 .AddRedis()
                 .AddServices()
+                .AddHostedServices()
                 .AddScrutor()
                 .ConfigureCors(configuration)
                 .ConfigureRateLimiter(configuration);
@@ -99,6 +107,16 @@ public static class ServiceExtensions
                 }
             );
 
+            services.AddScoped<IDbConnection>(sp =>
+            {
+                var cfg = sp.GetRequiredService<Config>();
+
+                return new NpgsqlConnection(cfg.Database.GetConnectionString());
+            });
+
+            SqlMapper.AddTypeHandler(new ListTypeHandler<string>());
+            SqlMapper.AddTypeHandler(new ListTypeHandler<int>());
+
             return services;
         }
 
@@ -138,6 +156,14 @@ public static class ServiceExtensions
             services.AddHttpClient<GithubOAuthClient>(client =>
                 client.Timeout = TimeSpan.FromSeconds(10)
             );
+
+            return services;
+        }
+
+        private IServiceCollection AddHostedServices()
+        {
+            services.AddHostedService<OutboxEmailSender>();
+            services.AddHostedService<RemoveExpiredSessions>();
 
             return services;
         }

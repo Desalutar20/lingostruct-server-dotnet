@@ -29,7 +29,7 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        // builder.ConfigureLogging(logger => logger.ClearProviders());
+        builder.ConfigureLogging(logger => logger.ClearProviders());
 
         builder.ConfigureAppConfiguration(
             (_, configBuilder) =>

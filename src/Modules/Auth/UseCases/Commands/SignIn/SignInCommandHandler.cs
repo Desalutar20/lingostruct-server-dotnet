@@ -1,4 +1,7 @@
+namespace src.Modules.Auth.UseCases.Commands.SignIn;
+
 using src.Data;
+using src.Modules.Auth;
 using src.Modules.Auth.Services;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
@@ -6,8 +9,6 @@ using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Shared.Services;
 using src.Modules.Users.Data;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Auth.UseCases;
 
 internal sealed record SignInCommand(Email Email, Password Password) : ICommand<(UserDto, Guid)>;
 

@@ -1,10 +1,10 @@
+namespace src.Modules.Auth.UseCases.Queries.GenerateOAuthUrl;
+
 using src.Modules.Auth.OAuth;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Auth.UseCases;
 
 internal sealed record GenerateOAuthUrlQuery(OAuthProvider Provider, NonEmptyString? AdditionState)
     : IQuery<(Url, OAuthState)>;

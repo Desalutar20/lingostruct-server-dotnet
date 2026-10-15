@@ -1,6 +1,6 @@
 namespace src.Modules.Auth.Endpoints;
 
-using src.Modules.Auth.UseCases;
+using src.Modules.Auth.UseCases.Commands.Logout;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Endpoints.Constants;
 using src.Modules.Shared.Endpoints.Dto;

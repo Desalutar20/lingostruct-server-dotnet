@@ -4,7 +4,7 @@ using src.Modules.Users.Domain;
 
 namespace src.Modules.Users.Data;
 
-public static class UserDataExtensions
+internal static class UserDataExtensions
 {
     public static Task<User?> GetByEmailAsync(
         this DbSet<User> users,

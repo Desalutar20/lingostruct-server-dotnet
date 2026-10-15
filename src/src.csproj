@@ -3,6 +3,8 @@
     <UserSecretsId>a34edf5e-314d-46f2-835a-65a43230372a</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Dapper.SqlBuilder" />
     <PackageReference Include="EFCore.NamingConventions" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="MailKit" />

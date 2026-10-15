@@ -2,14 +2,13 @@ namespace src.Modules.Auth.Endpoints;
 
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using src.Modules.Auth.UseCases;
+using src.Modules.Auth.UseCases.Commands.ForgotPassword;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Shared.Endpoints.Constants;
 using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Shared.Endpoints.Extensions;
 using src.Modules.Shared.Endpoints.Filters;
-using src.Modules.Users.Domain;
 
 [Serializable]
 public sealed record ForgotPasswordRequest(string Email);

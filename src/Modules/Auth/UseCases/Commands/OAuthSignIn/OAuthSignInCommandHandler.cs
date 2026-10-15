@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.UseCases.Commands.OAuthSignIn;
+
 using src.Data;
 using src.Modules.Auth.OAuth;
 using src.Modules.Auth.Services;
@@ -6,8 +8,6 @@ using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Data;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Auth.UseCases;
 
 internal sealed record OAuthSignInCommand(
     OAuthProvider Provider,

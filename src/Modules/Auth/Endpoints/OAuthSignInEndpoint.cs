@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using src.Modules.Auth.OAuth;
-using src.Modules.Auth.UseCases;
+using src.Modules.Auth.UseCases.Commands.OAuthSignIn;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
 using src.Modules.Shared.Domain.ValueObjects;

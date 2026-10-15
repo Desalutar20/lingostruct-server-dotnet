@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using src.Data;
+using src.Modules.Admin;
 using src.Modules.Auth.Endpoints;
 
 namespace src.Extensions;
@@ -22,6 +23,7 @@ public static class AppExtensions
             var group = app.MapGroup("/api/v1");
 
             group.MapAuthV1();
+            group.MapAdminV1();
 
             return app;
         }

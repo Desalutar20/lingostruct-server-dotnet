@@ -1,3 +1,5 @@
+namespace src.Modules.Auth.UseCases.Commands.ResetPassword;
+
 using src.Data;
 using src.Modules.Auth;
 using src.Modules.Auth.Services;
