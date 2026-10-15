@@ -1,6 +1,10 @@
+using Scalar.AspNetCore;
+using Serilog;
 using src.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
 
 builder.Host.UseDefaultServiceProvider(config =>
 {
@@ -9,7 +13,6 @@ builder.Host.UseDefaultServiceProvider(config =>
 });
 builder.WebHost.UseKestrel(options => options.AddServerHeader = false);
 
-builder.Services.AddOpenApi();
 builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
@@ -21,8 +24,11 @@ app.UseCors();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
     await app.ApplyMigrations();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseRateLimiter();

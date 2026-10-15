@@ -6,7 +6,7 @@ internal static partial class AdminEndpoints
 {
     public static void MapAdminV1(this IEndpointRouteBuilder router)
     {
-        var group = router.MapGroup("/admin");
+        var group = router.MapGroup("/admin").WithTags("Admin");
 
         group.MapAdminUsersV1();
     }

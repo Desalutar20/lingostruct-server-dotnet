@@ -68,31 +68,22 @@ public sealed class User(
     {
         var isUpdated = false;
 
-        if (firstName.HasValue)
+        if (firstName.HasValue && FirstName != firstName.Value)
         {
-            if (FirstName != firstName.Value)
-            {
-                FirstName = firstName.Value;
-                isUpdated = true;
-            }
+            FirstName = firstName.Value;
+            isUpdated = true;
         }
 
-        if (lastName.HasValue)
+        if (lastName.HasValue && LastName != lastName.Value)
         {
-            if (LastName != lastName.Value)
-            {
-                LastName = lastName.Value;
-                isUpdated = true;
-            }
+            LastName = lastName.Value;
+            isUpdated = true;
         }
 
-        if (avatarUrl.HasValue)
+        if (avatarUrl.HasValue && AvatarUrl != avatarUrl.Value)
         {
-            if (AvatarUrl != avatarUrl.Value)
-            {
-                AvatarUrl = avatarUrl.Value;
-                isUpdated = true;
-            }
+            AvatarUrl = avatarUrl.Value;
+            isUpdated = true;
         }
 
         if (isBanned.HasValue && IsBanned != isBanned.Value)

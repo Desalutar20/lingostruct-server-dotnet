@@ -6,6 +6,6 @@ internal static partial class AdminUsersEndpoints
     {
         var group = router.MapGroup("/users").WithTags("Admin users");
 
-        group.GetAdminUsersV1();
+        group.GetAdminUsersV1().SetBanStatusV1().RemoveUserV1();
     }
 }

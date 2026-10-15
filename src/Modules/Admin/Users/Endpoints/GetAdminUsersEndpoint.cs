@@ -1,3 +1,5 @@
+namespace src.Modules.Admin.Users.Endpoints;
+
 using FluentValidation;
 using src.Modules.Admin.Users.Constants;
 using src.Modules.Admin.Users.Dto;
@@ -11,8 +13,6 @@ using src.Modules.Shared.Endpoints.Extensions;
 using src.Modules.Shared.Endpoints.Filters;
 using src.Modules.Shared.Endpoints.Validators;
 using src.Modules.Users.Domain;
-
-namespace src.Modules.Admin.Users.Endpoints;
 
 public sealed record GetAdminUsersRequest(
     string? Search,

@@ -24,4 +24,18 @@ public partial class TestApp
 
         return await Request("/api/v1/admin/users", cookie, query, ct);
     }
+
+    protected async Task<HttpResponseMessage> SetBanStatus(
+        Guid userId,
+        SetBanStatusRequest request,
+        string? cookie,
+        CancellationToken ct = default
+    ) => await Request(request, HttpMethod.Patch, $"/api/v1/admin/users/{userId}/ban", cookie, ct);
+
+    protected async Task<HttpResponseMessage> RemoveUser(
+        Guid userId,
+        string? cookie,
+        CancellationToken ct = default
+    ) =>
+        await Request<object>(null, HttpMethod.Delete, $"/api/v1/admin/users/{userId}", cookie, ct);
 }
