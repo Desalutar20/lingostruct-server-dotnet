@@ -1,8 +1,6 @@
-using Microsoft.Extensions.Options;
 using src.Data;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;
-using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Data;
 using src.Modules.Users.Domain;
 

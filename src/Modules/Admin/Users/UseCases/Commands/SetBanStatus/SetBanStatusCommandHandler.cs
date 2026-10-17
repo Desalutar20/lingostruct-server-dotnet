@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Options;
 using src.Data;
 using src.Modules.Shared.CQRS;
 using src.Modules.Shared.Domain;

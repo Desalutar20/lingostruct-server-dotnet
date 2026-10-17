@@ -29,6 +29,7 @@ public partial class TestApp : IAsyncLifetime, IClassFixture<ApiFactory>
     public async ValueTask InitializeAsync()
     {
         _dbContext.Users.AddRange(TestData.SeedUsers());
+        _dbContext.Workspaces.AddRange(TestData.SeedWorkspaces());
 
         await _dbContext.SaveChangesAsync();
     }

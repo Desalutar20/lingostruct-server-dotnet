@@ -1,3 +1,5 @@
+namespace Integration.Admin.Users;
+
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
@@ -10,9 +12,7 @@ using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Users.Domain;
 using Xunit;
 
-namespace Integration.Admin.Users;
-
-public sealed class GetGetAdminUsersTests(ApiFactory factory) : TestApp(factory)
+public sealed class GetAdminUsersTests(ApiFactory factory) : TestApp(factory)
 {
     [Fact]
     public async ValueTask Should_ReturnOk_When_RequestIsValid()

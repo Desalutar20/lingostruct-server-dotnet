@@ -4,10 +4,11 @@ using src.Modules.Shared.Outbox;
 using src.Modules.Users.Data;
 using src.Modules.Users.Domain;
 using src.Modules.Users.Domain.Exceptions;
+using src.Modules.Workspaces.Domain;
 
 namespace src.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     private static readonly Dictionary<string, Func<Exception, Exception>> DuplicateExceptions =
         new() { [UserDbConstants.UniqueIndex] = ex => new UserAlreadyExistsException(ex) };
@@ -16,6 +17,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         new() { };
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Workspace> Workspaces { get; set; }
     public DbSet<Outbox> Outboxes { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken ct = default)

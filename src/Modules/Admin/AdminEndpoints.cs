@@ -1,4 +1,5 @@
 using src.Modules.Admin.Users.Endpoints;
+using src.Modules.Admin.Workspaces.Endpoints;
 
 namespace src.Modules.Admin;
 
@@ -9,5 +10,6 @@ internal static partial class AdminEndpoints
         var group = router.MapGroup("/admin").WithTags("Admin");
 
         group.MapAdminUsersV1();
+        group.MapAdminWorkspacesV1();
     }
 }

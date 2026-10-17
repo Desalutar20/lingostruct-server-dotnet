@@ -1,7 +1,9 @@
 using Bogus;
+using src.Modules.Admin.Workspaces.Endpoints;
 using src.Modules.Auth.Endpoints;
 using src.Modules.Shared.Domain.ValueObjects;
 using src.Modules.Users.Domain;
+using src.Modules.Workspaces.Domain;
 
 namespace Integration;
 
@@ -10,14 +12,17 @@ public static class TestData
     private static readonly Faker Faker = new();
 
     public static SignUpRequest SignUpRequest() =>
-        new Faker<SignUpRequest>()
-            .CustomInstantiator(f => new SignUpRequest(
-                FakeEmail(),
-                FakePassword(),
-                f.Name.FirstName(),
-                f.Name.LastName()
-            ))
-            .Generate();
+        new(FakeEmail(), FakePassword(), Faker.Name.FirstName(), Faker.Name.LastName());
+
+    public static CreateWorkspaceRequest CreateWorkspaceRequest() =>
+        new(
+            Faker.Random.AlphaNumeric(WorkspaceName.MaxLength),
+            Faker.Random.AlphaNumeric(WorkspaceAddress.CountryMaxLength),
+            Faker.Random.AlphaNumeric(WorkspaceAddress.CityMaxLength),
+            Faker.Random.AlphaNumeric(WorkspaceAddress.StreetMaxLength),
+            Faker.Random.AlphaNumeric(WorkspaceAddress.StreetNumberMaxLength),
+            Faker.Random.AlphaNumeric(WorkspaceAddress.PostalCodeMaxLength)
+        );
 
     public static string FakeEmail() => Faker.Internet.Email();
 
@@ -37,6 +42,28 @@ public static class TestData
                     .Value;
 
                 return new User(email, hashedPassword, null, null);
+            })
+            .ToList();
+
+    public static List<Workspace> SeedWorkspaces() =>
+        Enumerable
+            .Range(1, 200)
+            .Select(i =>
+            {
+                var name = WorkspaceName
+                    .Create(Faker.Random.AlphaNumeric(WorkspaceName.MaxLength))
+                    .Value;
+                var address = WorkspaceAddress
+                    .Create(
+                        Faker.Random.AlphaNumeric(WorkspaceAddress.CountryMaxLength),
+                        Faker.Random.AlphaNumeric(WorkspaceAddress.CityMaxLength),
+                        Faker.Random.AlphaNumeric(WorkspaceAddress.StreetMaxLength),
+                        Faker.Random.AlphaNumeric(WorkspaceAddress.StreetNumberMaxLength),
+                        Faker.Random.AlphaNumeric(WorkspaceAddress.PostalCodeMaxLength)
+                    )
+                    .Value;
+
+                return new Workspace(name, address);
             })
             .ToList();
 }

@@ -49,14 +49,17 @@ internal static partial class AuthEndpoint
                     var command = request.ToCommand();
                     var result = await commandHandler.Handle(command, ct);
 
-                    return result.IsFailure
-                        ? result.Error.ToApiError(logger)
-                        : Results.Created(
-                            "/sign-up",
-                            new ApiResponse<string>(
-                                "If the email is registered, instructions have been sent"
-                            )
-                        );
+                    if (result.IsFailure)
+                    {
+                        return result.Error.ToApiError(logger);
+                    }
+
+                    return Results.Created(
+                        "/sign-up",
+                        new ApiResponse<string>(
+                            "If the email is registered, instructions have been sent"
+                        )
+                    );
                 }
             )
             .AddEndpointFilter<ValidationFilter>()

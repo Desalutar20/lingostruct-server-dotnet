@@ -25,7 +25,6 @@ namespace src.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_outbox", x => x.id);
-                    table.CheckConstraint("CK_type", "type IN ('email')");
                 });
 
             migrationBuilder.CreateTable(
@@ -49,7 +48,25 @@ namespace src.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_users", x => x.id);
-                    table.CheckConstraint("CK_role", "role IN ('admin', 'regular')");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "workspace",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    country = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    postal_code = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    street_number = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamptz", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_workspace", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
@@ -79,6 +96,9 @@ namespace src.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "workspace");
         }
     }
 }

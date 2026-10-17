@@ -33,7 +33,7 @@ public sealed class GetAdminUsersRequestValidator
         )
     {
         RuleFor(x => x.Search)
-            .ValidateNullableValueObject(x => NonEmptyString.Create(x, label: "Search"))
+            .ValidateNullableValueObject(x => NonEmptyString.Create(x, "search", "Search"))
             .MaximumLength(AdminUsersConstants.GetAdminUsersSearchMaxLength);
     }
 }

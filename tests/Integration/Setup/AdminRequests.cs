@@ -1,4 +1,5 @@
 using src.Modules.Admin.Users.Endpoints;
+using src.Modules.Admin.Workspaces.Endpoints;
 
 namespace Integration.Setup;
 
@@ -38,4 +39,29 @@ public partial class TestApp
         CancellationToken ct = default
     ) =>
         await Request<object>(null, HttpMethod.Delete, $"/api/v1/admin/users/{userId}", cookie, ct);
+
+    protected async Task<HttpResponseMessage> GetAdminWorkspaces(
+        GetAdminWorkspacesRequest? data,
+        string? cookie,
+        CancellationToken ct = default
+    )
+    {
+        var query = new Dictionary<string, string?>
+        {
+            ["search"] = data?.Search,
+            ["limit"] = data?.Limit?.ToString(),
+            ["prevCursor"] = data?.PrevCursor,
+            ["nextCursor"] = data?.NextCursor,
+        }
+            .Where(x => x.Value is not null)
+            .ToDictionary(x => x.Key, x => x.Value);
+
+        return await Request("/api/v1/admin/workspaces", cookie, query, ct);
+    }
+
+    protected async Task<HttpResponseMessage> CreateWorkspace(
+        CreateWorkspaceRequest request,
+        string? cookie,
+        CancellationToken ct = default
+    ) => await Request(request, HttpMethod.Post, $"/api/v1/admin/workspaces", cookie, ct);
 }

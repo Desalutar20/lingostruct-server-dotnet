@@ -5,11 +5,14 @@ namespace src.Modules.Users.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using src.Data;
 
-internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
+internal sealed class UserConfiguration()
+    : BaseConfiguration<User, UserId>("users", val => new UserId(val))
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
+        base.Configure(builder);
         var roles = string.Join(
             ", ",
             new[] { UserRole.Admin, UserRole.Regular }.Select(r =>
@@ -19,24 +22,27 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Ignore(x => x.IsValid);
 
-        builder.ToTable(
-            "users",
-            table => table.HasCheckConstraint("CK_role", $"role IN ({roles})")
-        );
+        // builder.ToTable(
+        //     "users",
+        //     table => table.HasCheckConstraint("CK_role", $"role IN ({roles})")
+        // );
 
-        builder.HasKey(x => x.Id);
+        // builder.HasKey(x => x.Id);
 
-        builder.HasIndex(x => x.Email).IsUnique().HasDatabaseName(UserDbConstants.UniqueIndex);
+        builder
+            .HasIndex(x => x.Email)
+            .IsUnique()
+            .HasDatabaseName(UserDbConstants.UniqueIndex);
         builder.HasIndex(x => x.GoogleId).IsUnique();
         builder.HasIndex(x => x.GithubId).IsUnique();
 
-        builder
-            .Property(x => x.Id)
-            .HasConversion(id => id.Value, value => new UserId(value))
-            .ValueGeneratedNever();
+        // builder
+        //     .Property(x => x.Id)
+        //     .HasConversion(id => id.Value, value => new UserId(value))
+        //     .ValueGeneratedNever();
 
-        builder.Property(x => x.CreatedAt).HasColumnType("timestamptz").IsRequired();
-        builder.Property(x => x.UpdatedAt).HasColumnType("timestamptz").IsRequired();
+        // builder.Property(x => x.CreatedAt).HasColumnType("timestamptz").IsRequired();
+        // builder.Property(x => x.UpdatedAt).HasColumnType("timestamptz").IsRequired();
 
         builder
             .Property(x => x.FirstName)

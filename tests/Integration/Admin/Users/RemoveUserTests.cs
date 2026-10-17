@@ -1,3 +1,5 @@
+namespace Integration.Admin.Users;
+
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
@@ -6,8 +8,6 @@ using src.Modules.Admin.Users.Dto;
 using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Users.Domain;
 using Xunit;
-
-namespace Integration.Admin.Users;
 
 public sealed class RemoveUserTests(ApiFactory factory) : TestApp(factory)
 {

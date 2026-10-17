@@ -1,3 +1,5 @@
+namespace Integration.Admin.Users;
+
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
@@ -7,8 +9,6 @@ using src.Modules.Admin.Users.Endpoints;
 using src.Modules.Shared.Endpoints.Dto;
 using src.Modules.Users.Domain;
 using Xunit;
-
-namespace Integration.Admin.Users;
 
 public sealed class SetBanStatusTests(ApiFactory factory) : TestApp(factory)
 {

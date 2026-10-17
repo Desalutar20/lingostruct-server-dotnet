@@ -1,5 +1,6 @@
 namespace src.Modules.Auth.UseCases.Commands.SignIn;
 
+using System.Text.Json;
 using src.Data;
 using src.Modules.Auth;
 using src.Modules.Auth.Services;
@@ -24,15 +25,30 @@ internal sealed class SignInCommandHandler(
     )
     {
         var user = await dbContext.Users.GetByEmailAsync(command.Email, false, ct);
-        if (
-            user is null
-            || user.HashedPassword == null
-            || !HashingService.Verify(command.Password, user.HashedPassword)
-            || !user.IsValid
-        )
-        {
+
+        if (user is null)
             return AuthErrors.InvalidCredentials;
-        }
+
+        if (user.HashedPassword is null)
+            return AuthErrors.InvalidCredentials;
+
+        var passwordValid = HashingService.Verify(command.Password, user.HashedPassword);
+
+        if (!passwordValid)
+            return AuthErrors.InvalidCredentials;
+
+        if (!user.IsValid)
+            return AuthErrors.InvalidCredentials;
+
+        // if (
+        //     user is null
+        //     || user.HashedPassword == null
+        //     || !HashingService.Verify(command.Password, user.HashedPassword)
+        //     || !user.IsValid
+        // )
+        // {
+        //     return AuthErrors.InvalidCredentials;
+        // }
 
         var (session, sessionId) = await AuthService.GenerateSession(
             user,

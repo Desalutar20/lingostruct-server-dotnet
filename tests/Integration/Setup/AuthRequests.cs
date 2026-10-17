@@ -60,8 +60,10 @@ public partial class TestApp
 
         if (role is not null)
         {
+            var email = Email.Create(data.Email).Value;
+
             await _dbContext
-                .Users.Where(u => u.Email == data.Email)
+                .Users.Where(u => u.Email == email)
                 .ExecuteUpdateAsync(u => u.SetProperty(user => user.Role, user => role), ct);
         }
 
